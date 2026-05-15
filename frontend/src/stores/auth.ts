@@ -69,5 +69,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('sb-demo-session');
   }
 
-  return { user, token, role, isAdmin, isAuthenticated, loading, setUser, logout };
+  return { user, token, role, isAdmin, isAuthenticated, loading, setDemoUser, logout };
 });
