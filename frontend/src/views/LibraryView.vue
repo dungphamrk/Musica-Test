@@ -236,20 +236,28 @@ onMounted(async () => {
               Discover world-class, royalty-free tracks for your next big project. Elevate your content with the perfect sound.
             </p>
           </div>
-          <div class="flex gap-3">
-            <Button 
-              label="View Cart" 
-              icon="pi pi-shopping-cart" 
-              class="p-button-rounded bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors" 
-              @click="router.push('/cart')" 
-            />
-            <Button
+          <div class="flex flex-wrap gap-3">
+            <button 
+              @click="router.push('/cart')"
+              class="px-5 py-2.5 rounded-xl font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/10 hover:border-indigo-400 transition-all flex items-center gap-2 group"
+            >
+              <i class="pi pi-shopping-cart group-hover:text-indigo-400 transition-colors"></i> 
+              View Cart
+              <span v-if="cartStore.itemCount > 0" class="ml-1 px-2 py-0.5 rounded-full bg-indigo-500 text-xs font-bold">{{ cartStore.itemCount }}</span>
+            </button>
+            <button
               v-if="authStore.isAdmin"
-              label="Admin Panel"
-              icon="pi pi-cog"
-              class="p-button-rounded bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/30 transition-colors"
               @click="router.push('/admin/tracks')"
-            />
+              class="px-5 py-2.5 rounded-xl font-semibold text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 hover:border-indigo-500/40 transition-all flex items-center gap-2"
+            >
+              <i class="pi pi-cog"></i> Admin Panel
+            </button>
+            <button
+              @click="() => { authStore.logout(); router.push('/login'); }"
+              class="px-4 py-2.5 rounded-xl font-semibold text-slate-400 hover:text-red-400 bg-black/20 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all flex items-center gap-2"
+            >
+              <i class="pi pi-sign-out"></i>
+            </button>
           </div>
         </div>
 
