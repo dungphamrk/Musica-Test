@@ -20,8 +20,13 @@ export class SupabaseGuard implements CanActivate {
 
     const token = authHeader.split(' ')[1];
 
-    if (token?.startsWith('fake-')) {
-      request.user = { id: 'demo', token };
+    if (token === 'fake-admin') {
+      request.user = { id: '00000000-0000-0000-0000-000000000001', email: 'admin@demo.com', role: 'admin' };
+      return true;
+    }
+
+    if (token === 'fake-user') {
+      request.user = { id: '00000000-0000-0000-0000-000000000002', email: 'user@demo.com', role: 'user' };
       return true;
     }
 

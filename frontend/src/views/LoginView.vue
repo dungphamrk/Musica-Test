@@ -1,160 +1,91 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { supabase } from '../supabase';
 import { useAuthStore } from '../stores/auth';
-import { useToast } from 'primevue/usetoast';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const toast = useToast();
 
-const mode = ref<'login' | 'register'>('login');
-const email = ref('');
-const password = ref('');
-const fullName = ref('');
+const selectedRole = ref<'admin' | 'user'>('user');
 const loading = ref(false);
 
-const handleSubmit = async () => {
-  if (!email.value || !password.value) return;
+async function handleLogin() {
   loading.value = true;
-
-  try {
-    if (mode.value === 'register') {
-      const { data, error } = await supabase.auth.signUp({
-        email: email.value,
-        password: password.value,
-        options: {
-          data: {
-            full_name: fullName.value,
-          },
-        },
-      });
-
-      if (error) throw error;
-      toast.add({ severity: 'success', summary: 'Success', detail: 'Registration successful! Check your email to verify (if enabled) or log in now.', life: 5000 });
-      mode.value = 'login';
-    } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.value,
-        password: password.value,
-      });
-
-      if (error) throw error;
-      
-      // Update local store
-      authStore.setUser({
-        email: data.user.email || '',
-        role: 'user', // Basic role logic, upgrade later if needed
-      }, data.session.access_token);
-      
-      toast.add({ severity: 'success', summary: 'Welcome', detail: 'Logged in successfully', life: 3000 });
-      router.push('/library');
-    }
-  } catch (error: any) {
-    toast.add({ severity: 'error', summary: 'Error', detail: error.message || 'An error occurred', life: 5000 });
-    console.error('Auth error:', error);
-  } finally {
+  // Giả lập delay một chút cho chuyên nghiệp
+  setTimeout(() => {
+    authStore.setDemoUser(selectedRole.value);
+    router.push('/library');
     loading.value = false;
-  }
-};
+  }, 800);
+}
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-[#0a0a0a] font-sans selection:bg-indigo-500/30 p-4">
-    <!-- Hiệu ứng background -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-indigo-600/10 blur-[120px] rounded-full"></div>
-      <div class="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-purple-600/10 blur-[120px] rounded-full"></div>
+  <div class="min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-indigo-500/30 relative flex items-center justify-center p-6 overflow-hidden">
+    <!-- Ambient Backgrounds -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none fixed">
+      <div class="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-indigo-900/10 blur-[180px] rounded-full mix-blend-screen"></div>
+      <div class="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-fuchsia-900/10 blur-[180px] rounded-full mix-blend-screen"></div>
     </div>
 
-    <div class="relative z-10 w-full max-w-md bg-white/5 backdrop-blur-2xl border border-white/10 p-10 rounded-3xl shadow-2xl">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-2">
-          {{ mode === 'login' ? 'Chào mừng trở lại' : 'Tạo tài khoản mới' }}
-        </h2>
-        <p class="text-slate-400">
-          {{ mode === 'login' ? 'Đăng nhập vào hệ thống của bạn' : 'Tham gia cộng đồng âm nhạc bản quyền' }}
-        </p>
+    <div class="w-full max-w-xl relative z-10">
+      <div class="text-center mb-12">
+        <h1 class="text-6xl font-black text-white mb-4 tracking-tighter">MUSICA</h1>
+        <p class="text-slate-400 text-lg font-medium">Select your portal to continue</p>
       </div>
 
-      <div class="flex p-1 bg-black/20 rounded-xl mb-6 border border-white/5">
-        <button 
-          @click="mode = 'login'" 
-          :class="['flex-1 py-2 text-sm font-semibold rounded-lg transition-all', mode === 'login' ? 'bg-indigo-500/20 text-white shadow' : 'text-slate-400 hover:text-white']"
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <!-- User Selection -->
+        <div 
+          @click="selectedRole = 'user'"
+          :class="['group relative p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer overflow-hidden', selectedRole === 'user' ? 'bg-indigo-600/10 border-indigo-500 shadow-[0_0_40px_rgba(99,102,241,0.2)]' : 'bg-white/[0.02] border-white/5 hover:border-white/20']"
         >
-          Đăng nhập
-        </button>
-        <button 
-          @click="mode = 'register'" 
-          :class="['flex-1 py-2 text-sm font-semibold rounded-lg transition-all', mode === 'register' ? 'bg-indigo-500/20 text-white shadow' : 'text-slate-400 hover:text-white']"
+          <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div :class="['w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-500', selectedRole === 'user' ? 'bg-indigo-500 text-white shadow-lg' : 'bg-white/5 text-slate-500']">
+              <i class="pi pi-user text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">Customer</h3>
+            <p class="text-sm text-slate-500">Explore and purchase premium audio assets</p>
+          </div>
+          <!-- Selection indicator -->
+          <div v-if="selectedRole === 'user'" class="absolute top-4 right-4 w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center animate-in zoom-in duration-300">
+            <i class="pi pi-check text-[10px] text-white font-black"></i>
+          </div>
+        </div>
+
+        <!-- Admin Selection -->
+        <div 
+          @click="selectedRole = 'admin'"
+          :class="['group relative p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer overflow-hidden', selectedRole === 'admin' ? 'bg-purple-600/10 border-purple-500 shadow-[0_0_40px_rgba(168,85,247,0.2)]' : 'bg-white/[0.02] border-white/5 hover:border-white/20']"
         >
-          Đăng ký
-        </button>
+          <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div :class="['w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-500', selectedRole === 'admin' ? 'bg-purple-500 text-white shadow-lg' : 'bg-white/5 text-slate-500']">
+              <i class="pi pi-shield text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">Manager</h3>
+            <p class="text-sm text-slate-500">Control catalog and manage platform tracks</p>
+          </div>
+          <!-- Selection indicator -->
+          <div v-if="selectedRole === 'admin'" class="absolute top-4 right-4 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center animate-in zoom-in duration-300">
+            <i class="pi pi-check text-[10px] text-white font-black"></i>
+          </div>
+        </div>
       </div>
 
-      <form @submit.prevent="handleSubmit" class="space-y-5">
-        
-        <div v-if="mode === 'register'" class="space-y-2">
-          <label class="text-sm font-medium text-slate-400 ml-1">Họ và tên</label>
-          <div class="relative group">
-            <i class="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors z-10" />
-            <input
-              v-model="fullName"
-              type="text"
-              placeholder="Nguyễn Văn A"
-              required
-              class="w-full bg-black/20 text-white border border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 rounded-xl py-3 pl-12 pr-4 outline-none transition-all placeholder:text-slate-600"
-            />
-          </div>
-        </div>
+      <button 
+        @click="handleLogin"
+        :disabled="loading"
+        class="w-full py-5 rounded-[2rem] font-black text-xl text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 bg-[length:200%_auto] hover:bg-[position:right_center] shadow-2xl transition-all duration-500 flex items-center justify-center gap-3 hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0"
+      >
+        <i v-if="loading" class="pi pi-spin pi-spinner"></i>
+        <span v-else>ENTER PORTAL <i class="pi pi-arrow-right ml-2"></i></span>
+      </button>
 
-        <div class="space-y-2">
-          <label class="text-sm font-medium text-slate-400 ml-1">Email</label>
-          <div class="relative group">
-            <i class="pi pi-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors z-10" />
-            <input
-              v-model="email"
-              type="email"
-              placeholder="email@example.com"
-              required
-              class="w-full bg-black/20 text-white border border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 rounded-xl py-3 pl-12 pr-4 outline-none transition-all placeholder:text-slate-600"
-            />
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          <label class="text-sm font-medium text-slate-400 ml-1">Mật khẩu</label>
-          <div class="relative group">
-            <i class="pi pi-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors z-10" />
-            <input
-              v-model="password"
-              type="password"
-              placeholder="••••••••"
-              required
-              minlength="6"
-              class="w-full bg-black/20 text-white border border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 rounded-xl py-3 pl-12 pr-4 outline-none transition-all placeholder:text-slate-600"
-            />
-          </div>
-        </div>
-
-        <div v-if="mode === 'login'" class="flex items-center justify-between text-sm pt-2">
-          <div class="flex items-center gap-2">
-            <input type="checkbox" class="w-4 h-4 rounded border-white/20 bg-black/30 text-indigo-500 focus:ring-indigo-500/50 focus:ring-offset-0 transition-all" id="remember" />
-            <label for="remember" class="text-slate-400 cursor-pointer">Ghi nhớ tôi</label>
-          </div>
-          <a href="#" class="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">Quên mật khẩu?</a>
-        </div>
-
-        <button 
-          type="submit" 
-          :disabled="loading"
-          class="w-full mt-4 py-4 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 shadow-lg shadow-indigo-500/30 transition-all flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-        >
-          <i v-if="loading" class="pi pi-spin pi-spinner"></i>
-          <span v-else>{{ mode === 'login' ? 'Đăng nhập' : 'Tạo tài khoản' }}</span>
-        </button>
-      </form>
+      <p class="text-center mt-12 text-slate-600 text-xs font-bold uppercase tracking-widest">
+        Rapid Demo Mode Enabled
+      </p>
     </div>
   </div>
 </template>

@@ -40,16 +40,33 @@ export const useAuthStore = defineStore('auth', () => {
     }
   });
 
-  // Backward compatibility for components that manually set it (if any)
-  function setUser(userData: { email: string; role?: AuthRole }, userToken: string) {
-    user.value = { id: '', email: userData.email, role: userData.role ?? 'user' };
-    token.value = userToken;
+  // Manual login for demo purposes
+  function setDemoUser(role: AuthRole) {
+    const id = role === 'admin' ? '00000000-0000-0000-0000-000000000001' : '00000000-0000-0000-0000-000000000002';
+    const email = role === 'admin' ? 'admin@demo.com' : 'user@demo.com';
+    const fakeToken = `fake-${role}`;
+
+    user.value = { id, email, role };
+    token.value = fakeToken;
+    
+    // Save to localStorage so it persists on refresh
+    localStorage.setItem('sb-demo-session', JSON.stringify({ user: user.value, token: fakeToken }));
+  }
+
+  // Check for demo session on init
+  const saved = localStorage.getItem('sb-demo-session');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    user.value = parsed.user;
+    token.value = parsed.token;
+    loading.value = false;
   }
 
   async function logout() {
     await supabase.auth.signOut();
     user.value = null;
     token.value = null;
+    localStorage.removeItem('sb-demo-session');
   }
 
   return { user, token, role, isAdmin, isAuthenticated, loading, setUser, logout };
