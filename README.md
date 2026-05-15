@@ -1,38 +1,55 @@
-# Supabase + NestJS + Vue 3 Project
+# Musica - Audio Assets Marketplace
 
-Dự án này đã được cấu hình sẵn các thư viện yêu cầu và cấu trúc code chuẩn.
+Musica là một nền tảng thương mại điện tử hiện đại dành cho việc mua bán tài sản âm thanh (tracks, samples, effects), được xây dựng trên kiến trúc Full-stack mạnh mẽ với NestJS, Vue 3 và Supabase.
 
-## Cấu trúc
-- `/backend`: NestJS API.
-    - `SupabaseService`: Kết nối DB.
-    - `SupabaseGuard`: Bảo vệ API bằng JWT.
-    - `ItemsService`: Ví dụ CRUD.
-- `/frontend`: Vue 3 (Vite).
-    - `LoginView`: Trang đăng nhập thẩm mỹ.
-    - `HomeView`: Dashboard demo.
-    - `authStore`: Quản lý trạng thái bằng Pinia.
-    - `api`: Axios instance có sẵn interceptor cho Token.
+## 🚀 Tính năng chính
+- **Xác thực người dùng (Auth)**: Tích hợp Supabase Auth (Đăng ký, Đăng nhập, Đăng xuất).
+- **Thư viện âm nhạc (Library)**: Hiển thị danh sách track với bộ lọc nâng cao (Genre, Mood, Energy, BPM).
+- **Giỏ hàng (Cart)**: Đồng bộ hóa giỏ hàng thời gian thực với Database.
+- **Thanh toán đa bước (Multi-step Checkout)**: Quy trình thanh toán chuyên nghiệp với giả lập cổng thanh toán.
+- **Lịch sử mua hàng (Order History)**: Theo dõi các đơn hàng đã mua và trạng thái bản quyền.
+- **Quản trị viên (Admin Panel)**: Form thêm track chuyên nghiệp với 6 phân vùng dữ liệu kỹ thuật.
+- **API Documentation**: Tích hợp Swagger để kiểm thử và tra cứu API.
 
-## Cách chạy
-### 1. Cài đặt Node.js
-Đảm bảo bạn đã cài đặt Node.js trên máy.
+## 🛠 Tech Stack
+- **Backend**: NestJS (Node.js framework), Swagger, ConfigService.
+- **Frontend**: Vue 3 (Composition API), Vite, Pinia, Vue Router, PrimeVue (UI Components), Tailwind CSS.
+- **Database & Auth**: Supabase (PostgreSQL, Real-time).
 
-### 2. Cài đặt Backend
+## 🌐 Đường dẫn quan trọng
+- **Backend API (Render)**: [https://musica-test-kwy3.onrender.com](https://musica-test-kwy3.onrender.com)
+- **API Documentation (Swagger)**: [https://musica-test-kwy3.onrender.com/api/docs](https://musica-test-kwy3.onrender.com/api/docs)
+- **Frontend (Netlify)**: *[Vui lòng cập nhật link Netlify của bạn tại đây]*
+
+## 🛠 Hướng dẫn cài đặt
+
+### 1. Cấu hình Database (Supabase)
+Trước khi chạy dự án, bạn cần thực thi file schema trong SQL Editor của Supabase:
+- Mở file `backend/database/schema.sql`.
+- Copy và chạy lệnh trong Supabase dashboard để tạo các bảng `tracks`, `profiles`, `carts`, `orders`,...
+
+### 2. Backend Setup
 ```bash
 cd backend
 npm install
-cp .env.example .env
-# Cập nhật thông tin Supabase trong .env
+# Tạo file .env và điền SUPABASE_URL, SUPABASE_KEY
 npm run start:dev
 ```
 
-### 3. Cài đặt Frontend
+### 3. Frontend Setup
 ```bash
 cd frontend
 npm install
+# Tạo file .env và điền VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, VITE_API_URL
 npm run dev
 ```
 
-## Thư viện đã tích hợp
-- **Backend**: `@supabase/supabase-js`, `@nestjs/config`, `class-validator`, `class-transformer`.
-- **Frontend**: `pinia`, `vue-router`, `vueuse`, `axios`, `tailwindcss`, `primevue`.
+## 📂 Cấu trúc thư mục nổi bật
+- `backend/src/auth`: Bảo mật API bằng Supabase JWT Guard.
+- `backend/src/cart`: Logic xử lý giỏ hàng lưu trữ database.
+- `backend/src/orders`: Xử lý checkout và lịch sử giao dịch.
+- `frontend/src/stores`: Quản lý trạng thái Auth và Cart toàn cục.
+- `frontend/src/views`: Các giao diện người dùng cao cấp (Premium UI).
+
+---
+*Dự án được phát triển bởi Antigravity AI Assistant.*
