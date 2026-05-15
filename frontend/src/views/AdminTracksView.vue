@@ -197,65 +197,99 @@ onMounted(fetchTracks);
       </div>
 
       <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        <Card class="xl:col-span-2 bg-slate-900/50 border border-slate-800">
-          <template #title>Create New Track</template>
-          <template #content>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="space-y-2"><label class="text-sm text-slate-400">Title</label><InputText v-model="form.title" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Artist</label><InputText v-model="form.artist_name" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Composer</label><InputText v-model="form.composer" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Publisher</label><InputText v-model="form.publisher" class="w-full" /></div>
-              <div class="space-y-2 md:col-span-2">
-                <label class="text-sm text-slate-400">Description</label>
-                <textarea v-model="form.description" rows="4" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white" />
+        <div class="xl:col-span-2 space-y-6">
+          <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i class="pi pi-plus-circle text-indigo-400"></i> Create New Track</h2>
+            
+            <!-- 1. Basic Information -->
+            <div class="p-5 border border-white/10 rounded-2xl bg-black/20 mb-6">
+              <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2 flex items-center gap-2"><i class="pi pi-info-circle text-purple-400"></i> Basic Information</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Title</label><InputText v-model="form.title" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Artist</label><InputText v-model="form.artist_name" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Composer</label><InputText v-model="form.composer" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Publisher</label><InputText v-model="form.publisher" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2 md:col-span-2">
+                  <label class="text-sm font-medium text-slate-400">Description</label>
+                  <textarea v-model="form.description" rows="3" class="w-full rounded-xl border border-slate-700 bg-slate-950/50 px-3 py-2 text-white outline-none focus:border-indigo-500 transition-colors" />
+                </div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Release Date</label><InputText v-model="form.release_date" class="w-full bg-slate-950/50 border-slate-700" /></div>
               </div>
-
-              <div class="space-y-2"><label class="text-sm text-slate-400">Genre (csv)</label><InputText v-model="form.genre" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Mood (csv)</label><InputText v-model="form.mood" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Use Case (csv)</label><InputText v-model="form.use_case" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Theme (csv)</label><InputText v-model="form.theme" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Language</label><InputText v-model="form.language" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Energy</label><InputText v-model="form.energy_level" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Vocal Type</label><InputText v-model="form.vocal_type" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Release Date</label><InputText v-model="form.release_date" class="w-full" /></div>
-
-              <div class="space-y-2"><label class="text-sm text-slate-400">Duration (s)</label><InputText v-model="form.duration" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">BPM</label><InputText v-model="form.bpm" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Key</label><InputText v-model="form.key" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">File Type</label><InputText v-model="form.file_type" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Bitrate</label><InputText v-model="form.bitrate" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Sample Rate</label><InputText v-model="form.sample_rate" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">File Size MB</label><InputText v-model="form.file_size_mb" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Rights Holder</label><InputText v-model="form.rights_holder" class="w-full" /></div>
-
-              <div class="space-y-2"><label class="text-sm text-slate-400">Ownership Type</label><InputText v-model="form.ownership_type" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Copyright Status</label><InputText v-model="form.copyright_status" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Allowed Platforms (csv)</label><InputText v-model="form.allowed_platforms" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Territory</label><InputText v-model="form.territory" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Price</label><InputText v-model="form.price" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">License Type</label><InputText v-model="form.license_type" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Preview URL</label><InputText v-model="form.preview_url" class="w-full" /></div>
-              <div class="space-y-2"><label class="text-sm text-slate-400">Original File URL</label><InputText v-model="form.file_url" class="w-full" /></div>
-              <div class="space-y-2 md:col-span-2"><label class="text-sm text-slate-400">Cover Image URL</label><InputText v-model="form.cover_image_url" class="w-full" /></div>
-              <div class="space-y-2 md:col-span-2"><label class="text-sm text-slate-400">Platform Scope Note</label><InputText v-model="form.platform_scope_note" class="w-full" /></div>
             </div>
 
-            <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-              <label class="flex items-center gap-2"><input v-model="form.licensing_available" type="checkbox" /> Licensing</label>
-              <label class="flex items-center gap-2"><input v-model="form.commercial_allowed" type="checkbox" /> Commercial</label>
-              <label class="flex items-center gap-2"><input v-model="form.monetization_allowed" type="checkbox" /> Monetization</label>
-              <label class="flex items-center gap-2"><input v-model="form.sponsor_usage_allowed" type="checkbox" /> Sponsor</label>
-              <label class="flex items-center gap-2"><input v-model="form.ads_usage_allowed" type="checkbox" /> Ads</label>
-              <label class="flex items-center gap-2"><input v-model="form.personal_usage_allowed" type="checkbox" /> Personal</label>
-              <label class="flex items-center gap-2"><input v-model="form.youtube_allowed" type="checkbox" /> YouTube</label>
-              <label class="flex items-center gap-2"><input v-model="form.youtube_shorts_allowed" type="checkbox" /> Shorts</label>
+            <!-- 2. Files & Media -->
+            <div class="p-5 border border-white/10 rounded-2xl bg-black/20 mb-6">
+              <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2 flex items-center gap-2"><i class="pi pi-file text-emerald-400"></i> Files & Media</h3>
+              <div class="grid grid-cols-1 gap-4">
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Cover Image URL</label><InputText v-model="form.cover_image_url" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Original File URL</label><InputText v-model="form.file_url" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Preview URL</label><InputText v-model="form.preview_url" class="w-full bg-slate-950/50 border-slate-700" /></div>
+              </div>
             </div>
 
-            <div class="mt-4 flex justify-end">
-              <Button label="Create Track" icon="pi pi-plus" :loading="loading" @click="createTrack" />
+            <!-- 3. Metadata & Attributes -->
+            <div class="p-5 border border-white/10 rounded-2xl bg-black/20 mb-6">
+              <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2 flex items-center gap-2"><i class="pi pi-tags text-blue-400"></i> Metadata & Tags</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Genre (csv)</label><InputText v-model="form.genre" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Mood (csv)</label><InputText v-model="form.mood" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Use Case (csv)</label><InputText v-model="form.use_case" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Theme (csv)</label><InputText v-model="form.theme" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Language</label><InputText v-model="form.language" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Energy</label><InputText v-model="form.energy_level" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Vocal Type</label><InputText v-model="form.vocal_type" class="w-full bg-slate-950/50 border-slate-700" /></div>
+              </div>
             </div>
-          </template>
-        </Card>
+
+            <!-- 4. Technical Specs -->
+            <div class="p-5 border border-white/10 rounded-2xl bg-black/20 mb-6">
+              <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2 flex items-center gap-2"><i class="pi pi-sliders-h text-orange-400"></i> Technical Specifications</h3>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Duration (s)</label><InputText v-model="form.duration" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">BPM</label><InputText v-model="form.bpm" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Key</label><InputText v-model="form.key" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">File Type</label><InputText v-model="form.file_type" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Bitrate</label><InputText v-model="form.bitrate" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Sample Rate</label><InputText v-model="form.sample_rate" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Size (MB)</label><InputText v-model="form.file_size_mb" class="w-full bg-slate-950/50 border-slate-700" /></div>
+              </div>
+            </div>
+
+            <!-- 5. Licensing & Rights -->
+            <div class="p-5 border border-white/10 rounded-2xl bg-black/20 mb-6">
+              <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2 flex items-center gap-2"><i class="pi pi-shield text-yellow-400"></i> Rights & Licensing</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Rights Holder</label><InputText v-model="form.rights_holder" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Ownership Type</label><InputText v-model="form.ownership_type" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Copyright Status</label><InputText v-model="form.copyright_status" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Allowed Platforms (csv)</label><InputText v-model="form.allowed_platforms" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Territory</label><InputText v-model="form.territory" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Price ($)</label><InputText v-model="form.price" class="w-full bg-slate-950/50 border-slate-700 font-bold text-emerald-400" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">License Type</label><InputText v-model="form.license_type" class="w-full bg-slate-950/50 border-slate-700" /></div>
+                <div class="space-y-2"><label class="text-sm font-medium text-slate-400">Platform Scope Note</label><InputText v-model="form.platform_scope_note" class="w-full bg-slate-950/50 border-slate-700" /></div>
+              </div>
+            </div>
+
+            <!-- 6. Usage Permissions -->
+            <div class="p-5 border border-white/10 rounded-2xl bg-black/20">
+              <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2 flex items-center gap-2"><i class="pi pi-check-square text-green-400"></i> Usage Permissions</h3>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-slate-300">
+                <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-white/10"><input v-model="form.licensing_available" type="checkbox" class="w-4 h-4 accent-indigo-500" /> Licensing Available</label>
+                <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-white/10"><input v-model="form.commercial_allowed" type="checkbox" class="w-4 h-4 accent-indigo-500" /> Commercial Use</label>
+                <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-white/10"><input v-model="form.monetization_allowed" type="checkbox" class="w-4 h-4 accent-indigo-500" /> Monetization</label>
+                <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-white/10"><input v-model="form.sponsor_usage_allowed" type="checkbox" class="w-4 h-4 accent-indigo-500" /> Sponsored Content</label>
+                <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-white/10"><input v-model="form.ads_usage_allowed" type="checkbox" class="w-4 h-4 accent-indigo-500" /> Paid Ads</label>
+                <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-white/10"><input v-model="form.personal_usage_allowed" type="checkbox" class="w-4 h-4 accent-indigo-500" /> Personal Use</label>
+                <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-white/10"><input v-model="form.youtube_allowed" type="checkbox" class="w-4 h-4 accent-indigo-500" /> YouTube Standard</label>
+                <label class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-white/10"><input v-model="form.youtube_shorts_allowed" type="checkbox" class="w-4 h-4 accent-indigo-500" /> YouTube Shorts</label>
+              </div>
+            </div>
+
+            <div class="mt-8 flex justify-end pt-4 border-t border-slate-800">
+              <Button label="Save Track to Catalog" icon="pi pi-save" :loading="loading" @click="createTrack" class="p-button-lg bg-indigo-600 hover:bg-indigo-500 border-none px-8 shadow-lg shadow-indigo-500/20" />
+            </div>
+          </div>
+        </div>
 
         <Card class="bg-slate-900/50 border border-slate-800">
           <template #title>Recent Catalog Items</template>

@@ -7,16 +7,13 @@ const apiClient = axios.create({
   },
 });
 
+import { supabase } from '../supabase';
+
 // Thêm interceptor để tự động chèn token vào header
-apiClient.interceptors.request.use((config) => {
-  const session = localStorage.getItem('supabase.auth.session');
-  if (session) {
-    try {
-      const parsed = JSON.parse(session) as { token?: string };
-      if (parsed.token) config.headers.Authorization = `Bearer ${parsed.token}`;
-    } catch {
-      localStorage.removeItem('supabase.auth.session');
-    }
+apiClient.interceptors.request.use(async (config) => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.access_token) {
+    config.headers.Authorization = `Bearer ${session.access_token}`;
   }
   return config;
 });

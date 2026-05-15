@@ -252,6 +252,13 @@ onMounted(async () => {
             >
               <i class="pi pi-cog"></i> Admin Panel
             </button>
+            <button 
+              @click="router.push('/profile/orders')"
+              class="px-5 py-2.5 rounded-xl font-semibold text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex items-center gap-2 group"
+            >
+              <i class="pi pi-history group-hover:text-indigo-400 transition-colors"></i> 
+              History
+            </button>
             <button
               @click="() => { authStore.logout(); router.push('/login'); }"
               class="px-4 py-2.5 rounded-xl font-semibold text-slate-400 hover:text-red-400 bg-black/20 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all flex items-center gap-2"
