@@ -43,16 +43,18 @@ export class OrdersService {
     const totalAmount = items.reduce((sum, item) => sum + Number(item.price), 0);
 
     // 3. Create the order
+    const orderPayload = {
+      user_id: userId.startsWith('0000') ? null : userId, // Use null for demo UUIDs to avoid FK constraint issues
+      total_amount: totalAmount,
+      status: 'paid',
+      payment_method: checkoutData.paymentMethod,
+      customer_name: checkoutData.customerName,
+      customer_email: checkoutData.customerEmail,
+    };
+
     const { data: order, error: orderError } = await this.client
       .from('orders')
-      .insert({
-        user_id: userId,
-        total_amount: totalAmount,
-        status: 'paid', // For demo, we assume payment is successful
-        payment_method: checkoutData.paymentMethod,
-        customer_name: checkoutData.customerName,
-        customer_email: checkoutData.customerEmail,
-      })
+      .insert(orderPayload)
       .select('id')
       .single();
 
@@ -82,7 +84,7 @@ export class OrdersService {
   }
 
   async getHistory(userId: string) {
-    if (!this.supabaseService.isConfigured() || userId === 'demo') return [];
+    if (!this.supabaseService.isConfigured()) return [];
 
     const { data: orders, error } = await this.client
       .from('orders')
@@ -97,13 +99,10 @@ export class OrdersService {
           track_id
         )
       `)
-      .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
     if (error) throw new InternalServerErrorException(error.message);
 
-    // Fetch track details for each order item
-    // This is a simplified version; in a real app, you'd use a join or a more efficient query
     return orders;
   }
 }
